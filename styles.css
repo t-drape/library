@@ -1,0 +1,33 @@
+.library {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.card {
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+
+.new-book {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+.have-read {
+  margin-bottom: 25px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-evenly;
+}

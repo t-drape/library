@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+  <title>Document</title>
+</head>
+<body>
+  <div class="library"></div>
+  <div class="new-book">
+    <form>
+      <label for="title">Title</label>
+      <input id="title" name="title" type="text" required>
+      <br>
+      <label for="author">Author</label>
+      <input id="author" name="author" type="text" required>
+      <br>
+      <label for="pages">Pages</label>
+      <input id="pages" name="pages" type="number" min="1" required>
+      <br>
+      <div class="have-read">
+        <input id="have_read" name="status" value="true" type="radio" required>
+        <label for="have_read">Finished</label>
+        <br>
+        <input id="not_read" name="status" value="false" type="radio">
+        <label for="not_read">Not Finished</label>
+        <br>
+      </div>
+      <input type="submit">
+    </form>
+  </div>
+</body>
+</html>
