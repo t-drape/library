@@ -38,7 +38,7 @@ function createNewCard(book) {
   button.textContent = "Remove Book";
   changeStatus.textContent = "Change Status";
   button.addEventListener("click", removeBook);
-  changeStatus.addEventListener("click", toggleStatus);
+  changeStatus.addEventListener("click", adjustStatus);
   buttons.appendChild(button);
   buttons.appendChild(changeStatus);
   newBook.appendChild(bookTitle);
@@ -82,17 +82,23 @@ function removeBook(event) {
   viewCollection(myBooks);
 }
 
-function toggleStatus(event) {
-  let changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
-  if (changeBook.have_read === true) {
-    changeBook.have_read = false;
+Book.prototype.toggleStatus = function() {
+  console.log()
+  if (this.have_read === true) {
+    this.have_read = false;
   } else {
-    changeBook.have_read = true;
+    this.have_read = true;
   }
+}
+
+function adjustStatus(event) {
+  let changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+  changeBook.toggleStatus();
   viewCollection(myBooks);
 }
 
 myBooks = [];
+
 
 const form = document.querySelector("form");
 const submitter = document.querySelector("input[type=submit]");
