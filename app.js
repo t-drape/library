@@ -34,6 +34,18 @@ class Book {
     };
   }
 
+  static adjustStatus(event) {
+    let changeBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+    changeBook.toggleStatus();
+    Book.viewCollection();
+  }
+
+  static removeBook(event) {
+    const delBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+    Book.myBooks.splice(Book.myBooks.indexOf((delBook)), 1);
+    Book.viewCollection();
+  }
+
   constructor(title, author, pages, have_read) {
     this.id = crypto.randomUUID();
     this.title = title;
@@ -70,8 +82,8 @@ class Book {
     }
     button.textContent = "Remove Book";
     changeStatus.textContent = "Change Status";
-    button.addEventListener("click", removeBook);
-    changeStatus.addEventListener("click", adjustStatus);
+    button.addEventListener("click", Book.removeBook);
+    changeStatus.addEventListener("click", Book.adjustStatus);
     buttons.appendChild(button);
     buttons.appendChild(changeStatus);
     newBook.appendChild(bookTitle);
@@ -83,6 +95,7 @@ class Book {
     buttons.classList.add("buttons-container");
     return newBook;
   }
+
 }
 
 function addNewBook(event) {
@@ -94,18 +107,6 @@ function addNewBook(event) {
   Book.viewCollection();
   form.reset();
   showHide();
-}
-
-function removeBook(event) {
-  let delBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
-  Book.myBooks.splice(Book.myBooks.indexOf((delBook)), 1);
-  Book.viewCollection();
-}
-
-function adjustStatus(event) {
-  let changeBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
-  changeBook.toggleStatus();
-  Book.viewCollection();
 }
 
 function showHide() {
