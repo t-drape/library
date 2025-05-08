@@ -1,54 +1,107 @@
-function Book(id, title, author, pages, have_read) {
-  if(!new.target) {
-    throw Error("Must use new!");
-  }
-  this.id = id;
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.have_read = have_read;
-  this.bookInfo = function() {
-    return title + " by " + author + ", " + pages + " pages." + "\nBook Status: " + have_read;
-  };
-};
+// function Book(id, title, author, pages, have_read) {
+//   if(!new.target) {
+//     throw Error("Must use new!");
+//   }
+//   this.id = id;
+//   this.title = title;
+//   this.author = author;
+//   this.pages = pages;
+//   this.have_read = have_read;
+//   this.bookInfo = function() {
+//     return title + " by " + author + ", " + pages + " pages." + "\nBook Status: " + have_read;
+//   };
+// };
 
-function addBookToCollection(title, author, pages, have_read, arr) {
-  newBook = new Book(crypto.randomUUID(), title, author, pages, have_read);
-  arr.push(newBook);
+class Book {
+  #id = crypto.randomUUID();
+  constructor(title, author, pages, have_read) {
+    // this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.have_read = have_read;
+  }
+
+  createNewCard() {
+    console.log("Hola");
+    let newBook = document.createElement('div');
+    let bookTitle = document.createElement('p');
+    let bookAuthor = document.createElement('p');
+    let bookPages = document.createElement('p');
+    let bookStatus = document.createElement('p');
+    let buttons = document.createElement("div");
+    let button = document.createElement('button');
+    let changeStatus = document.createElement('button');
+    newBook.setAttribute("data-book", this.#id);
+    bookTitle.textContent = this.title;
+    bookAuthor.textContent = this.author;
+    bookPages.textContent = this.pages;
+    if (this.have_read === true) {
+      bookStatus.textContent = "Finished";
+    } else {
+      bookStatus.textContent = "Not Finished";
+    }
+    button.textContent = "Remove Book";
+    changeStatus.textContent = "Change Status";
+    button.addEventListener("click", removeBook);
+    changeStatus.addEventListener("click", adjustStatus);
+    buttons.appendChild(button);
+    buttons.appendChild(changeStatus);
+    newBook.appendChild(bookTitle);
+    newBook.appendChild(bookAuthor);
+    newBook.appendChild(bookPages);
+    newBook.appendChild(bookStatus);
+    newBook.appendChild(buttons);
+    newBook.classList.add("card");
+    buttons.classList.add("buttons-container");
+    return newBook;
+  }
+
+  // toggleStatus() {
+  //   console.log("Presen")
+  //   if (this.have_read == true) {
+  //     this.have_read = false;
+  //   } else {
+  //     this.have_read = true;
+  //   }
+  // }
+
+  // adjustStatus(event) {
+  //   console.log("Here too")
+  //   const changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+  //   changeBook.toggleStatus();
+  //   viewCollection(myBooks);
+  // }
+
+
+  toggleStatus() {
+    if (this.have_read === true) {
+      this.have_read = false;
+    } else {
+      this.have_read = true;
+    }
+  }
+
+  adjustStatus(event) {
+    let changeBook;
+    for (book of myBooks) {
+      if (book.#id === event.target.parentElement.parentElement.dataset.book) changeBook = book;
+    }
+    changeBook.toggleStatus();
+    viewCollection(myBooks);
+  }
+  
+  // adjustStatus(event) {
+  //   let changeBook = myBooks.find((book) => book.#id === event.target.parentElement.parentElement.dataset.book);
+  //   console.log(changeBook);
+  //   changeBook.toggleStatus();
+  //   viewCollection(myBooks);
+  // }
 }
 
-function createNewCard(book) {
-  let newBook = document.createElement('div');
-  let bookTitle = document.createElement('p');
-  let bookAuthor = document.createElement('p');
-  let bookPages = document.createElement('p');
-  let bookStatus = document.createElement('p');
-  let buttons = document.createElement("div");
-  let button = document.createElement('button');
-  let changeStatus = document.createElement('button');
-  newBook.setAttribute("data-book", book.id);
-  bookTitle.textContent = book.title;
-  bookAuthor.textContent = book.author;
-  bookPages.textContent = book.pages;
-  if (book.have_read === true) {
-    bookStatus.textContent = "Finished";
-  } else {
-    bookStatus.textContent = "Not Finished";
-  }
-  button.textContent = "Remove Book";
-  changeStatus.textContent = "Change Status";
-  button.addEventListener("click", removeBook);
-  changeStatus.addEventListener("click", adjustStatus);
-  buttons.appendChild(button);
-  buttons.appendChild(changeStatus);
-  newBook.appendChild(bookTitle);
-  newBook.appendChild(bookAuthor);
-  newBook.appendChild(bookPages);
-  newBook.appendChild(bookStatus);
-  newBook.appendChild(buttons);
-  newBook.classList.add("card");
-  buttons.classList.add("buttons-container");
-  return newBook;
+function addBookToCollection(title, author, pages, have_read, arr) {
+  newBook = new Book(title, author, pages, have_read);
+  arr.push(newBook);
 }
 
 function removeAllBooks(lib) {
@@ -62,7 +115,7 @@ function viewCollection(books) {
   const lib = document.querySelector(".library");
   removeAllBooks(lib);
   for (book of books) {
-    lib.appendChild(createNewCard(book));
+    lib.appendChild(book.createNewCard());
   };
 }
 
@@ -82,14 +135,13 @@ function removeBook(event) {
   viewCollection(myBooks);
 }
 
-Book.prototype.toggleStatus = function() {
-  console.log()
-  if (this.have_read === true) {
-    this.have_read = false;
-  } else {
-    this.have_read = true;
-  }
-}
+// Book.prototype.toggleStatus = function() {
+//   if (this.have_read === true) {
+//     this.have_read = false;
+//   } else {
+//     this.have_read = true;
+//   }
+// }
 
 function adjustStatus(event) {
   let changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
