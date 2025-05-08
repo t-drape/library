@@ -13,13 +13,21 @@
 // };
 
 class Book {
-  #id = crypto.randomUUID();
+  static myBooks = [];
   constructor(title, author, pages, have_read) {
-    // this.id = crypto.randomUUID();
+    this.id = crypto.randomUUID();
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.have_read = have_read;
+  }
+
+  toggleStatus() {
+    if (this.have_read === true) {
+      this.have_read = false;
+    } else {
+      this.have_read = true;
+    }
   }
 
   createNewCard() {
@@ -32,7 +40,7 @@ class Book {
     let buttons = document.createElement("div");
     let button = document.createElement('button');
     let changeStatus = document.createElement('button');
-    newBook.setAttribute("data-book", this.#id);
+    newBook.setAttribute("data-book", this.id);
     bookTitle.textContent = this.title;
     bookAuthor.textContent = this.author;
     bookPages.textContent = this.pages;
@@ -73,22 +81,9 @@ class Book {
   //   viewCollection(myBooks);
   // }
 
-
-  toggleStatus() {
-    if (this.have_read === true) {
-      this.have_read = false;
-    } else {
-      this.have_read = true;
-    }
-  }
-
-  adjustStatus(event) {
-    let changeBook;
-    for (book of myBooks) {
-      if (book.#id === event.target.parentElement.parentElement.dataset.book) changeBook = book;
-    }
-    changeBook.toggleStatus();
-    viewCollection(myBooks);
+  addBookToCollection(title, author, pages, have_read, arr) {
+    newBook = new Book(title, author, pages, have_read);
+    arr.push(newBook);
   }
   
   // adjustStatus(event) {
