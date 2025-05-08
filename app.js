@@ -1,3 +1,5 @@
+// Here's my function form
+
 // function Book(id, title, author, pages, have_read) {
 //   if(!new.target) {
 //     throw Error("Must use new!");
@@ -11,6 +13,9 @@
 //     return title + " by " + author + ", " + pages + " pages." + "\nBook Status: " + have_read;
 //   };
 // };
+
+
+// Here's my class form
 
 class Book {
   static myBooks = [];
