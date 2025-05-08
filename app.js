@@ -14,6 +14,26 @@
 
 class Book {
   static myBooks = [];
+
+  static addBookToCollection(title, author, pages, have_read) {
+    const newBook = new Book(title, author, pages, have_read);
+    Book.myBooks.push(newBook);
+  }
+
+  static removeAllBooks(lib) {
+    while (lib.firstChild) {
+      lib.removeChild(lib.firstChild);
+    };
+  }
+
+  static viewCollection() {
+    const lib = document.querySelector(".library");
+    Book.removeAllBooks(lib);
+    for (let b of Book.myBooks) {
+      lib.appendChild(b.createNewCard());
+    };
+  }
+
   constructor(title, author, pages, have_read) {
     this.id = crypto.randomUUID();
     this.title = title;
@@ -31,7 +51,6 @@ class Book {
   }
 
   createNewCard() {
-    console.log("Hola");
     let newBook = document.createElement('div');
     let bookTitle = document.createElement('p');
     let bookAuthor = document.createElement('p');
@@ -64,54 +83,6 @@ class Book {
     buttons.classList.add("buttons-container");
     return newBook;
   }
-
-  // toggleStatus() {
-  //   console.log("Presen")
-  //   if (this.have_read == true) {
-  //     this.have_read = false;
-  //   } else {
-  //     this.have_read = true;
-  //   }
-  // }
-
-  // adjustStatus(event) {
-  //   console.log("Here too")
-  //   const changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
-  //   changeBook.toggleStatus();
-  //   viewCollection(myBooks);
-  // }
-
-  addBookToCollection(title, author, pages, have_read, arr) {
-    newBook = new Book(title, author, pages, have_read);
-    arr.push(newBook);
-  }
-  
-  // adjustStatus(event) {
-  //   let changeBook = myBooks.find((book) => book.#id === event.target.parentElement.parentElement.dataset.book);
-  //   console.log(changeBook);
-  //   changeBook.toggleStatus();
-  //   viewCollection(myBooks);
-  // }
-}
-
-function addBookToCollection(title, author, pages, have_read, arr) {
-  newBook = new Book(title, author, pages, have_read);
-  arr.push(newBook);
-}
-
-function removeAllBooks(lib) {
-  while (lib.firstChild) {
-    lib.removeChild(lib.firstChild);
-  };
-};
-
-
-function viewCollection(books) {
-  const lib = document.querySelector(".library");
-  removeAllBooks(lib);
-  for (book of books) {
-    lib.appendChild(book.createNewCard());
-  };
 }
 
 function addNewBook(event) {
@@ -119,38 +90,34 @@ function addNewBook(event) {
   const data = new FormData(form);
   let status;
   status = (data.get("status") === "true") ? true : false;
-  addBookToCollection(data.get("title"), data.get("author"), data.get("pages"), status, myBooks);
-  viewCollection(myBooks);
+  Book.addBookToCollection(data.get("title"), data.get("author"), data.get("pages"), status);
+  Book.viewCollection();
   form.reset();
+  showHide();
 }
 
 function removeBook(event) {
-  let delBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
-  myBooks.splice(myBooks.indexOf((delBook)), 1);
-  viewCollection(myBooks);
+  let delBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+  Book.myBooks.splice(Book.myBooks.indexOf((delBook)), 1);
+  Book.viewCollection();
 }
-
-// Book.prototype.toggleStatus = function() {
-//   if (this.have_read === true) {
-//     this.have_read = false;
-//   } else {
-//     this.have_read = true;
-//   }
-// }
 
 function adjustStatus(event) {
-  let changeBook = myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
+  let changeBook = Book.myBooks.find((book) => book.id === event.target.parentElement.parentElement.dataset.book);
   changeBook.toggleStatus();
-  viewCollection(myBooks);
+  Book.viewCollection();
 }
 
-myBooks = [];
-
+function showHide() {
+  showButton.classList.toggle("show");
+  form.classList.toggle("show");
+}
 
 const form = document.querySelector("form");
 const submitter = document.querySelector("input[type=submit]");
 const data = new FormData(form);
-const inputs = document.querySelectorAll("input");
+const showButton = document.querySelector("button");
+  showButton.addEventListener("click", showHide);
 form.addEventListener("submit", addNewBook);
 
 

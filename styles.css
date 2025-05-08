@@ -31,3 +31,7 @@ form {
   display: flex;
   justify-content: space-evenly;
 }
+
+.show {
+  display: none;
+}
